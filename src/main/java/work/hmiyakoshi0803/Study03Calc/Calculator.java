@@ -2,45 +2,48 @@ package work.hmiyakoshi0803.Study03Calc;
 
 public class Calculator {
 
+    double resultVal;
 
-    public ResultCalc execCalc(String mode, double num1, double num2) {
+    public Calculator() {
+        resultVal = 0;
+    }
+
+    public double execCalc(String mode, double num) throws CalculatorException{
         
-        ResultCalc result = new ResultCalc();
-
-        result.rc = 0;
-        result.val = 0;
-
         switch (mode) {
             case "ADD":
-                result.val = num1 + num2;
+                resultVal += num;
                 break;
             
             case "SUB":
-                result.val = num1 - num2;
+                resultVal -= num;
                 break;                        
             
             case "MUL":
-                result.val = num1 * num2;
+                resultVal *= num;
                 break;
             
             case "DIV":
-                result.val = num1 / num2;
+                if (num == 0) throw new IllegalArgumentException("Divide by zero.");
+                resultVal /= num;
                 break;
             
             case "CLR":
-                result.val = 0;
+                resultVal = 0;
                 break;
 
             case "EXIT":
-                result.rc = 1;
                 break;
 
             default:
-                result.val = num1;
-                result.rc = -1;
-                break;
+                throw new CalculatorException("Something is wrong...");
         }
 
-        return result;
+        return resultVal;
+    }
+
+    // Check whether mode is EXIT or not.
+    public boolean isExit(String mode) {
+        return (mode.equals("EXIT"));
     }
 }

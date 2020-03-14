@@ -10,7 +10,7 @@ public class Main {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
 
             Calculator calc = new Calculator();
-            ResultCalc result = new ResultCalc();
+            double resultVal = 0;
 
             while (true) {
 
@@ -18,29 +18,25 @@ public class Main {
                 System.out.print(">");
                 String line = br.readLine();
 
-                // Check input value
+                // Parse input value
                 String[] str = line.split("\\s+");
                 String mode = str[0];
-                double num = 0;
-                if (str.length == 2) num = Double.parseDouble(str[1]);
+                double num = (str.length == 2) ? Double.parseDouble(str[1]) : 0;
 
-                // Execute calculation
-                result = calc.execCalc(mode, result.val, num);
-
-                // Evaluate result
-                if (result.rc == 0) {
-                    System.out.println(result.val);
-
-                } else if (result.rc == -1) {
-                    System.out.println(result.val);
-                    System.err.println("Please enter correct input");
-
-                } else if (result.rc == 1) {
+                // Check Exit
+                if (calc.isExit(mode)) {
                     System.out.println("bye bye ヾ(；ω；) bye bye");
                     return;
-                } else {
-                    System.err.println("Something wrong...");
-                    return;
+                }
+
+                // Execute calculation
+                try {
+                    resultVal = calc.execCalc(mode, num);
+                    System.out.println(resultVal);
+
+                } catch (CalculatorException e) {
+                    System.out.println(e.getMessage());
+
                 }
             }
         } finally {
